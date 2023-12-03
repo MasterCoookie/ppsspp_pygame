@@ -30,10 +30,11 @@ font = psp2d.Font('font.png')
 # ball_position=[width/2,height/2]
 # ball_velocity=[0,0]
 
-class Player(psp2d.Image):
+class GameObject(psp2d.Image):
     def __init__(self, *args):
         psp2d.Image.__init__(self, *args)
         self.position = [width/2,height/2]
+        self.velocity = [0,0]
         # self.size = [9, 9]
 
     def move(self, velocity):
@@ -44,7 +45,7 @@ class Player(psp2d.Image):
         screen.blit(self, 0, 0, self.size[0], self.size[1], self.position[0], self.position[1], True)
 
 
-player = Player('ball.png')
+player = GameObject('ball.png')
 
 all_entities = [player]
 
@@ -55,13 +56,13 @@ while game_started:
     if pad.cross: #z na klawie
         game_started = False
     if pad.left:
-        velocity[0] = -4
+        player.velocity[0] = -4
     if pad.right:
-        velocity[0] = 4
+        player.velocity[0] = 4
     if pad.up:
-        velocity[1] = -4
+        player.velocity[1] = -4
     if pad.down:
-        velocity[1] = 4
+        player.velocity[1] = 4
 
     # ball_position[0] += velocity[0]
     # ball_position[1] += velocity[1]
@@ -69,7 +70,8 @@ while game_started:
     screen.clear(psp2d.Color(0,0,0,255))
     # screen.blit(ball, 0, 0, ball_size[0], ball_size[1], ball_position[0], ball_position[1], True)
     for entity in all_entities:
-        entity.move(velocity)
+        entity.move(entity.velocity)
+        entity.velocity = [0,0]
         entity.draw(screen)
     screen.swap()
 
