@@ -16,6 +16,8 @@ pspos.setclocks(333,166)
 print "Localtime: ", localtime()
 print "Datetime: ", datetime.datetime.now()
 
+GENERAL_VELOCITY = 4
+
 
 width, height = 480, 272
 
@@ -35,6 +37,8 @@ class GameObject(psp2d.Image):
         psp2d.Image.__init__(self, *args)
         # self.position = [width/2,height/2]
         self.velocity = [0,0]
+        self.target_x = None
+        self.target_y = None
         # self.size = [9, 9]
 
     def move(self, velocity):
@@ -55,6 +59,33 @@ class GameObject(psp2d.Image):
             return True
         else:
             return False
+        
+    def update(self):
+        if self.target_x is not None:
+            if abs(self.target_x - self.position[0]) < GENERAL_VELOCITY:
+                self.position[0] = self.target_x
+                self.target_x = None
+
+            if self.target_x > self.position[0]:
+                self.velocity[0] = GENERAL_VELOCITY
+            elif self.target_x < self.position[0]:
+                self.velocity[0] = -GENERAL_VELOCITY
+                
+
+        
+        if self.target_y is not None:
+            if abs(self.target_y - self.position[1]) < GENERAL_VELOCITY:
+                self.position[1] = self.target_y
+                self.target_y = None
+            if self.target_y > self.position[1]:
+                self.velocity[1] = GENERAL_VELOCITY
+            elif self.target_y < self.position[1]:
+                self.velocity[1] = -GENERAL_VELOCITY
+
+    def goto(self, target_x, target_y):
+        self.target_x = target_x
+        self.target_y = target_y
+    
 
 
 player = GameObject('ball.png')
@@ -62,6 +93,7 @@ player.set_starting_position([width/2,height/2])
 
 ciulik = GameObject('ball.png')
 ciulik.set_starting_position([width/3,height/3])
+ciulik.goto(100, 100)
 
 all_entities = [player, ciulik]
 
@@ -72,13 +104,13 @@ while game_started:
     if pad.cross: #z na klawie
         game_started = False
     if pad.left:
-        player.velocity[0] = -4
+        player.velocity[0] = -GENERAL_VELOCITY
     if pad.right:
-        player.velocity[0] = 4
+        player.velocity[0] = GENERAL_VELOCITY
     if pad.up:
-        player.velocity[1] = -4
+        player.velocity[1] = -GENERAL_VELOCITY
     if pad.down:
-        player.velocity[1] = 4
+        player.velocity[1] = GENERAL_VELOCITY
 
     # ball_position[0] += velocity[0]
     # ball_position[1] += velocity[1]
@@ -86,6 +118,7 @@ while game_started:
     screen.clear(psp2d.Color(0,0,0,255))
     # screen.blit(ball, 0, 0, ball_size[0], ball_size[1], ball_position[0], ball_position[1], True)
     for entity in all_entities:
+        entity.update()
         entity.move(entity.velocity)
         entity.velocity = [0,0]
         entity.draw(screen)

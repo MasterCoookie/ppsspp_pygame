@@ -1,0 +1,16 @@
+-------------- Python-PSP started Sun Dec  3 13:01:05 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 13, 1, 6, 6, 337, 0)
+Datetime:  2023-12-03 13:01:06.073483
+Traceback (most recent call last):
+  File "script.py", line 113, in <module>
+    entity.update()
+  File "script.py", line 62, in update
+    if self.target_x is not None:
+AttributeError: 'GameObject' object has no attribute 'target_x'
+--------------------------------------------------------------------------------
