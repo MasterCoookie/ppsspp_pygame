@@ -32,6 +32,10 @@ font = psp2d.Font('font.png')
 # ball_position=[width/2,height/2]
 # ball_velocity=[0,0]
 
+def draw_text(screen, text, x=0, y=0):
+    font.drawText(screen, x, y, text)
+
+
 class GameObject(psp2d.Image):
     def __init__(self, *args):
         psp2d.Image.__init__(self, *args)
@@ -39,6 +43,9 @@ class GameObject(psp2d.Image):
         self.velocity = [0,0]
         self.target_x = None
         self.target_y = None
+
+        self.target_a = None
+        self.target_b = None
         # self.size = [9, 9]
 
     def move(self, velocity):
@@ -60,9 +67,14 @@ class GameObject(psp2d.Image):
         else:
             return False
         
+    def is_within(self, point, target, offset=0):
+        if abs(point - target) < GENERAL_VELOCITY + offset:
+            return True
+        return False
+        
     def update(self):
         if self.target_x is not None:
-            if abs(self.target_x - self.position[0]) < GENERAL_VELOCITY:
+            if self.is_within(self.target_x, self.position[0]):
                 self.position[0] = self.target_x
                 self.target_x = None
 
@@ -71,10 +83,8 @@ class GameObject(psp2d.Image):
             elif self.target_x < self.position[0]:
                 self.velocity[0] = -GENERAL_VELOCITY
                 
-
-        
         if self.target_y is not None:
-            if abs(self.target_y - self.position[1]) < GENERAL_VELOCITY:
+            if self.is_within(self.target_y, self.position[1]):
                 self.position[1] = self.target_y
                 self.target_y = None
             if self.target_y > self.position[1]:
@@ -82,9 +92,25 @@ class GameObject(psp2d.Image):
             elif self.target_y < self.position[1]:
                 self.velocity[1] = -GENERAL_VELOCITY
 
+        if self.target_a is not None and self.target_b is not None:
+            draw_text(screen, "pos: %s, %s" % (self.position[0], self.position[1]))
+            if self.is_within(self.position[0], self.target_a[0], self.size[0]) and self.is_within(self.position[1], self.target_a[1], self.size[1]):
+                self.goto(self.target_b[0], self.target_b[1])
+                draw_text(screen, "dupa1")
+            elif self.is_within(self.position[0], self.target_b[0], self.size[0]) and self.is_within(self.position[1], self.target_b[1], self.size[1]):
+                draw_text(screen, "dupa2")
+                self.goto(self.target_a[0], self.target_a[1])
+
     def goto(self, target_x, target_y):
         self.target_x = target_x
         self.target_y = target_y
+
+    def walk_between(self, target_a, target_b):
+        self.target_a = target_a
+        self.target_b = target_b
+
+        self.target_x = target_a[0]
+        self.target_y = target_a[1]
     
 
 
@@ -92,8 +118,10 @@ player = GameObject('ball.png')
 player.set_starting_position([width/2,height/2])
 
 ciulik = GameObject('ball.png')
-ciulik.set_starting_position([width/3,height/3])
-ciulik.goto(100, 100)
+ciulik.set_starting_position([0, 0])
+# ciulik.goto(width, height)
+# ciulik.goto(150, 150)
+ciulik.walk_between([width-5, height-5], [0, 0])
 
 all_entities = [player, ciulik]
 
@@ -124,7 +152,8 @@ while game_started:
         entity.draw(screen)
 
     if player.intersects(ciulik):
-        font.drawText(screen, 0, 0, "Hello World")
+        # font.drawText(screen, 0, 0, "Hello World")
+        draw_text(screen, "Hello World")
         # print "Collision detected!"
 
     screen.swap()
