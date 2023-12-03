@@ -18,7 +18,7 @@ pspos.setclocks(333,166)
 print "Localtime: ", localtime()
 print "Datetime: ", datetime.datetime.now()
 
-GENERAL_VELOCITY = 4
+GENERAL_VELOCITY = 2
 
 
 width, height = 480, 272
@@ -96,7 +96,7 @@ class GameObject(psp2d.Image):
                 self.velocity[1] = -GENERAL_VELOCITY
 
         if self.target_a is not None and self.target_b is not None:
-            draw_text(screen, "pos: %s, %s" % (self.position[0], self.position[1]))
+            # draw_text(screen, "pos: %s, %s" % (self.position[0], self.position[1]))
             if self.is_within(self.position[0], self.target_a[0], self.size[0]) and self.is_within(self.position[1], self.target_a[1], self.size[1]):
                 self.goto(self.target_b[0], self.target_b[1])
             elif self.is_within(self.position[0], self.target_b[0], self.size[0]) and self.is_within(self.position[1], self.target_b[1], self.size[1]):
@@ -134,12 +134,6 @@ class Alien(GameObject):
 player = Player('wajchadlowiec2.png')
 player.set_starting_position([width/2,height - player.size[1]])
 
-# ciulik = GameObject('ball.png')
-# ciulik.set_starting_position([0, 0])
-# ciulik.goto(width, height)
-# ciulik.goto(150, 150)
-# ciulik.walk_between([width-5, height-5], [0, 0])
-
 all_entities = [player]
 bullets = []
 enemies = []
@@ -148,6 +142,7 @@ game_started = True
 
 last_shot = time.time() - 3
 shot_cooldown = 1
+score = 0
 
 now = time.time()
 
@@ -156,7 +151,7 @@ while game_started:
     velocity = [0,0]
     if pad.cross and abs(last_shot - time.time()) > shot_cooldown: #z na klawie
         bullet = GameObject('BURAK_0.png')
-        bullet.set_starting_position([player.position[0] + player.size[0]/2, player.position[1] - 10])
+        bullet.set_starting_position([player.position[0] + player.size[0]/2, player.position[1] - 15])
         bullet.goto(bullet.position[0], -20)
         bullets.append(bullet)
         all_entities.append(bullet)
@@ -196,8 +191,9 @@ while game_started:
             if bullet.intersects(enemy):
                 enemy.removed = True
                 bullet.removed = True
+                score += 1
                 if random.randint(0, 2) == 0:
-                    powerup = GameObject('ball.png')
+                    powerup = GameObject('rsz_1bonus_3.png')
                     powerup.set_starting_position([enemy.position[0] + enemy.size[0]/2, enemy.position[1] + enemy.size[1] + 5])
                     powerup.goto(powerup.position[0], height + 20)
                     all_entities.append(powerup)
@@ -230,7 +226,8 @@ while game_started:
         now = time.time()
 
     # draw_text(screen, "elapsed: " + str(time.time() - now))
-    draw_text(screen, "entities: " + str(len(all_entities)), 50)
-    draw_text(screen, "bullets: " + str(len(bullets)), 200)
+    # draw_text(screen, "entities: " + str(len(all_entities)), 50)
+    # draw_text(screen, "bullets: " + str(len(bullets)), 200)
+    draw_text(screen, "score: " + str(score))
 
     screen.swap()
