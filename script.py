@@ -154,7 +154,7 @@ while game_started:
     velocity = [0,0]
     if pad.cross: #z na klawie
         bullet = GameObject('BURAK_0.png')
-        bullet.set_starting_position([player.position[0] + player.size[0]/2, player.position[1] - 5])
+        bullet.set_starting_position([player.position[0] + player.size[0]/2, player.position[1] - 10])
         bullet.goto(bullet.position[0], -20)
         bullets.append(bullet)
         all_entities.append(bullet)
@@ -192,13 +192,13 @@ while game_started:
             if bullet.intersects(enemy):
                 enemy.removed = True
                 bullet.removed = True
-                break
-    # if player.intersects(ciulik):
-        # font.drawText(screen, 0, 0, "Hello World")
-        # draw_text(screen, "Hello World")
-        # ciulik.removed = True
-        # print "Collision detected!"
-        # pass
+                continue
+            if bullet.intersects(player):
+                player.removed = True
+                bullet.removed = True
+                game_started = False
+                continue
+
 
     if time.time() - now > 5:
         # draw_text(screen, "spawning")
