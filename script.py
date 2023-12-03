@@ -143,6 +143,7 @@ player.set_starting_position([width/2,height - player.size[1]])
 # ciulik.walk_between([width-5, height-5], [0, 0])
 
 all_entities = [player]
+bullets = []
 
 game_started = True
 
@@ -152,7 +153,11 @@ while game_started:
     pad = psp2d.Controller()
     velocity = [0,0]
     if pad.cross: #z na klawie
-        game_started = False
+        bullet = GameObject('BURAK_0.png')
+        bullet.set_starting_position([player.position[0] + player.size[0]/2, player.position[1] - 5])
+        bullet.goto(bullet.position[0], -20)
+        bullets.append(bullet)
+        all_entities.append(bullet)
     if pad.left:
         player.velocity[0] = -GENERAL_VELOCITY
     if pad.right:
@@ -169,6 +174,12 @@ while game_started:
         entity.velocity = [0,0]
         entity.draw(screen)
 
+    for bullet in bullets:
+        if bullet.position[1] < 0:
+            bullet.removed = True
+        if bullet.removed:
+            bullets.remove(bullet)
+            continue
     # if player.intersects(ciulik):
         # font.drawText(screen, 0, 0, "Hello World")
         # draw_text(screen, "Hello World")
@@ -179,12 +190,14 @@ while game_started:
     if time.time() - now > 5:
         # draw_text(screen, "spawning")
         for _ in range(random.randint(1, 5)):
-            ciulik = GameObject('ball.png')
+            ciulik = GameObject('ufo.png')
             ciulik.set_starting_position([random.randint(0, width - 10), 0])
             # ciulik.walk_between([width-5, height-5], [0, 0])
             all_entities.append(ciulik)
         now = time.time()
 
     # draw_text(screen, "elapsed: " + str(time.time() - now))
+    draw_text(screen, "entities: " + str(len(all_entities)), 50)
+    draw_text(screen, "bullets: " + str(len(bullets)), 200)
 
     screen.swap()
