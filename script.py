@@ -99,9 +99,7 @@ class GameObject(psp2d.Image):
             draw_text(screen, "pos: %s, %s" % (self.position[0], self.position[1]))
             if self.is_within(self.position[0], self.target_a[0], self.size[0]) and self.is_within(self.position[1], self.target_a[1], self.size[1]):
                 self.goto(self.target_b[0], self.target_b[1])
-                draw_text(screen, "dupa1")
             elif self.is_within(self.position[0], self.target_b[0], self.size[0]) and self.is_within(self.position[1], self.target_b[1], self.size[1]):
-                draw_text(screen, "dupa2")
                 self.goto(self.target_a[0], self.target_a[1])
 
     def goto(self, target_x, target_y):
@@ -145,19 +143,25 @@ player.set_starting_position([width/2,height - player.size[1]])
 all_entities = [player]
 bullets = []
 enemies = []
+powerups = []
 game_started = True
+
+last_shot = time.time() - 3
+shot_cooldown = 1
 
 now = time.time()
 
 while game_started:
     pad = psp2d.Controller()
     velocity = [0,0]
-    if pad.cross: #z na klawie
+    if pad.cross and abs(last_shot - time.time()) > shot_cooldown: #z na klawie
         bullet = GameObject('BURAK_0.png')
         bullet.set_starting_position([player.position[0] + player.size[0]/2, player.position[1] - 10])
         bullet.goto(bullet.position[0], -20)
         bullets.append(bullet)
         all_entities.append(bullet)
+        last_shot = time.time()
+        
     if pad.left:
         player.velocity[0] = -GENERAL_VELOCITY
     if pad.right:
@@ -192,6 +196,12 @@ while game_started:
             if bullet.intersects(enemy):
                 enemy.removed = True
                 bullet.removed = True
+                if random.randint(0, 2) == 0:
+                    powerup = GameObject('ball.png')
+                    powerup.set_starting_position([enemy.position[0] + enemy.size[0]/2, enemy.position[1] + enemy.size[1] + 5])
+                    powerup.goto(powerup.position[0], height + 20)
+                    all_entities.append(powerup)
+                    powerups.append(powerup)
                 continue
             if bullet.intersects(player):
                 player.removed = True
@@ -199,13 +209,22 @@ while game_started:
                 game_started = False
                 continue
 
-
+    for powerup in powerups:
+        if powerup.intersects(player):
+            powerup.removed = True
+            powerups.remove(powerup)
+            if shot_cooldown > 0.1:
+                shot_cooldown -= 0.1
+            continue
+        
     if time.time() - now > 5:
         # draw_text(screen, "spawning")
         for _ in range(random.randint(1, 5)):
             ciulik = GameObject('ufo.png')
-            ciulik.set_starting_position([random.randint(0, width - 10), 0])
-            # ciulik.walk_between([width-5, height-5], [0, 0])
+            ciulik.set_starting_position([random.randint(0, width - 10), ciulik.size[1]])
+            rand_x_a = random.randint(0, width - 10)
+            rand_x_b = random.randint(0, width - 10)
+            ciulik.walk_between([rand_x_a, ciulik.size[1]], [rand_x_b, ciulik.size[1]])
             all_entities.append(ciulik)
             enemies.append(ciulik)
         now = time.time()
