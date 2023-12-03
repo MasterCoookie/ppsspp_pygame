@@ -33,7 +33,7 @@ font = psp2d.Font('font.png')
 class GameObject(psp2d.Image):
     def __init__(self, *args):
         psp2d.Image.__init__(self, *args)
-        self.position = [width/2,height/2]
+        # self.position = [width/2,height/2]
         self.velocity = [0,0]
         # self.size = [9, 9]
 
@@ -41,13 +41,29 @@ class GameObject(psp2d.Image):
         self.position[0] += velocity[0]
         self.position[1] += velocity[1]
 
+    def set_starting_position(self, position):
+        self.position = position
+
     def draw(self, screen):
         screen.blit(self, 0, 0, self.size[0], self.size[1], self.position[0], self.position[1], True)
 
+    def intersects(self, other):
+        if self.position[0] < other.position[0] + other.size[0] and \
+           self.position[0] + self.size[0] > other.position[0] and \
+           self.position[1] < other.position[1] + other.size[1] and \
+           self.position[1] + self.size[1] > other.position[1]:
+            return True
+        else:
+            return False
+
 
 player = GameObject('ball.png')
+player.set_starting_position([width/2,height/2])
 
-all_entities = [player]
+ciulik = GameObject('ball.png')
+ciulik.set_starting_position([width/3,height/3])
+
+all_entities = [player, ciulik]
 
 game_started = True
 while game_started:
