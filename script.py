@@ -9,6 +9,8 @@ from time import time, localtime
 import datetime
 import sys
 import stackless, random
+import time
+import random
 
 # Set processor and bus speed
 pspos.setclocks(333,166)
@@ -134,15 +136,18 @@ class Alien(GameObject):
 player = Player('wajchadlowiec2.png')
 player.set_starting_position([width/2,height - player.size[1]])
 
-ciulik = GameObject('ball.png')
-ciulik.set_starting_position([0, 0])
+# ciulik = GameObject('ball.png')
+# ciulik.set_starting_position([0, 0])
 # ciulik.goto(width, height)
 # ciulik.goto(150, 150)
-ciulik.walk_between([width-5, height-5], [0, 0])
+# ciulik.walk_between([width-5, height-5], [0, 0])
 
-all_entities = [player, ciulik]
+all_entities = [player]
 
 game_started = True
+
+now = time.time()
+
 while game_started:
     pad = psp2d.Controller()
     velocity = [0,0]
@@ -164,10 +169,22 @@ while game_started:
         entity.velocity = [0,0]
         entity.draw(screen)
 
-    if player.intersects(ciulik):
+    # if player.intersects(ciulik):
         # font.drawText(screen, 0, 0, "Hello World")
         # draw_text(screen, "Hello World")
-        ciulik.removed = True
+        # ciulik.removed = True
         # print "Collision detected!"
+        # pass
+
+    if time.time() - now > 5:
+        # draw_text(screen, "spawning")
+        for _ in range(random.randint(1, 5)):
+            ciulik = GameObject('ball.png')
+            ciulik.set_starting_position([random.randint(0, width - 10), 0])
+            # ciulik.walk_between([width-5, height-5], [0, 0])
+            all_entities.append(ciulik)
+        now = time.time()
+
+    # draw_text(screen, "elapsed: " + str(time.time() - now))
 
     screen.swap()
