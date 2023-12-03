@@ -113,10 +113,26 @@ class GameObject(psp2d.Image):
         self.target_x = target_a[0]
         self.target_y = target_a[1]
     
+class Player(GameObject):
+    def __init__(self, *args):
+        GameObject.__init__(self, *args)
 
+    def update(self):
+        return GameObject.update(self)
+    
+    def move(self, velocity):
+        if self.position[0] + self.velocity[0] > 0 and self.position[0] + self.velocity[0] < width - self.size[0]:
+            return GameObject.move(self, velocity)
+    
+class Alien(GameObject):
+    def __init__(self, *args):
+        GameObject.__init__(self, *args)
 
-player = GameObject('ball.png')
-player.set_starting_position([width/2,height/2])
+    def update(self):
+        return GameObject.update(self)
+
+player = Player('wajchadlowiec2.png')
+player.set_starting_position([width/2,height - player.size[1]])
 
 ciulik = GameObject('ball.png')
 ciulik.set_starting_position([0, 0])
@@ -136,13 +152,6 @@ while game_started:
         player.velocity[0] = -GENERAL_VELOCITY
     if pad.right:
         player.velocity[0] = GENERAL_VELOCITY
-    if pad.up:
-        player.velocity[1] = -GENERAL_VELOCITY
-    if pad.down:
-        player.velocity[1] = GENERAL_VELOCITY
-
-    # ball_position[0] += velocity[0]
-    # ball_position[1] += velocity[1]
 
     screen.clear(psp2d.Color(0,0,0,255))
     # screen.blit(ball, 0, 0, ball_size[0], ball_size[1], ball_position[0], ball_position[1], True)
