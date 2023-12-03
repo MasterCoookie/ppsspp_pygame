@@ -144,7 +144,7 @@ player.set_starting_position([width/2,height - player.size[1]])
 
 all_entities = [player]
 bullets = []
-
+enemies = []
 game_started = True
 
 now = time.time()
@@ -175,11 +175,24 @@ while game_started:
         entity.draw(screen)
 
     for bullet in bullets:
-        if bullet.position[1] < 0:
+        if bullet.position[1] < 0 or bullet.position[1] > height:
             bullet.removed = True
         if bullet.removed:
             bullets.remove(bullet)
             continue
+    
+    for enemy in enemies:
+        if random.randint(0, 150) == 0:
+            bullet = GameObject('bullet_enemy.png')
+            bullet.set_starting_position([enemy.position[0] + enemy.size[0]/2, enemy.position[1] + enemy.size[1] + 5])
+            bullet.goto(bullet.position[0], height + 20)
+            bullets.append(bullet)
+            all_entities.append(bullet)
+        for bullet in bullets:
+            if bullet.intersects(enemy):
+                enemy.removed = True
+                bullet.removed = True
+                break
     # if player.intersects(ciulik):
         # font.drawText(screen, 0, 0, "Hello World")
         # draw_text(screen, "Hello World")
@@ -194,6 +207,7 @@ while game_started:
             ciulik.set_starting_position([random.randint(0, width - 10), 0])
             # ciulik.walk_between([width-5, height-5], [0, 0])
             all_entities.append(ciulik)
+            enemies.append(ciulik)
         now = time.time()
 
     # draw_text(screen, "elapsed: " + str(time.time() - now))
