@@ -46,6 +46,7 @@ class GameObject(psp2d.Image):
 
         self.target_a = None
         self.target_b = None
+        self.removed = False
         # self.size = [9, 9]
 
     def move(self, velocity):
@@ -146,6 +147,9 @@ while game_started:
     screen.clear(psp2d.Color(0,0,0,255))
     # screen.blit(ball, 0, 0, ball_size[0], ball_size[1], ball_position[0], ball_position[1], True)
     for entity in all_entities:
+        if entity.removed:
+            all_entities.remove(entity)
+            continue
         entity.update()
         entity.move(entity.velocity)
         entity.velocity = [0,0]
@@ -153,7 +157,8 @@ while game_started:
 
     if player.intersects(ciulik):
         # font.drawText(screen, 0, 0, "Hello World")
-        draw_text(screen, "Hello World")
+        # draw_text(screen, "Hello World")
+        ciulik.removed = True
         # print "Collision detected!"
 
     screen.swap()
