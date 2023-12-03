@@ -89,6 +89,9 @@ while game_started:
         entity.move(entity.velocity)
         entity.velocity = [0,0]
         entity.draw(screen)
+
+    if player.intersects(ciulik):
+        font.drawText(screen, 0, 0, "Hello World")
+        # print "Collision detected!"
+
     screen.swap()
-
-
