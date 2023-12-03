@@ -248,3 +248,63 @@ Starting pspogg
 Localtime:  (2023, 12, 3, 16, 59, 39, 6, 337, 0)
 Datetime:  2023-12-03 16:59:39.090083
 --------------------------------------------------------------------------------
+-------------- Python-PSP started Sun Dec  3 17:04:36 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 17, 4, 37, 6, 337, 0)
+Datetime:  2023-12-03 17:04:37.090084
+--------------------------------------------------------------------------------
+-------------- Python-PSP started Sun Dec  3 17:04:59 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 17, 5, 0, 6, 337, 0)
+Datetime:  2023-12-03 17:05:00.090083
+--------------------------------------------------------------------------------
+-------------- Python-PSP started Sun Dec  3 17:05:41 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 17, 5, 42, 6, 337, 0)
+Datetime:  2023-12-03 17:05:42.090084
+--------------------------------------------------------------------------------
+-------------- Python-PSP started Sun Dec  3 17:09:21 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 17, 9, 22, 6, 337, 0)
+Datetime:  2023-12-03 17:09:22.090084
+--------------------------------------------------------------------------------
+-------------- Python-PSP started Sun Dec  3 17:09:33 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 17, 9, 34, 6, 337, 0)
+Datetime:  2023-12-03 17:09:34.090084
+--------------------------------------------------------------------------------
+-------------- Python-PSP started Sun Dec  3 17:09:58 2023
+
+Free memory: 1162240
+PyPSP running in: umd0:
+Search path: python.zip;lib/python21.zip;umd0:/python/site-packages;umd0:/python
+
+Starting pspogg
+Localtime:  (2023, 12, 3, 17, 9, 59, 6, 337, 0)
+Datetime:  2023-12-03 17:09:59.090084
+--------------------------------------------------------------------------------

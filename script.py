@@ -202,7 +202,13 @@ while game_started:
             if bullet.intersects(player):
                 player.removed = True
                 bullet.removed = True
-                game_started = False
+                while 1:
+                    draw_text(screen, "GAME OVER, SCORE: " + str(score), 150, 50)
+                    for entity in all_entities:
+                        entity.draw(screen)
+                    screen.swap()
+                    if pad.cross:
+                        sys.exit(0)
                 continue
 
     for powerup in powerups:
